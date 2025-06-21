@@ -1,7 +1,11 @@
+using BudgetAppProject.Extensions;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
+
+DIExtension.AddUsecases(builder.Services);
 
 var app = builder.Build();
 
