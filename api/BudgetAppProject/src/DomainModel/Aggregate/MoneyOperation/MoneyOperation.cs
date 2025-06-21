@@ -4,7 +4,7 @@ using BudgetAppProject.DomainModel.Utils;
 
 public class MoneyOperation
 {
-    public string Id { get; private set; }
+    public string Id { get; init; }
 
     public string Title { get; private set; }
 
@@ -16,7 +16,7 @@ public class MoneyOperation
 
     public MoneyOperationType Type { get; private set; }
 
-    public string UserId { get; private set; }
+    public string UserId { get; init; }
 
     public string CategoryId { get; private set; }
 

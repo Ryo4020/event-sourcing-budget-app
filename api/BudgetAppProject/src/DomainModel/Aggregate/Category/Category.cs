@@ -4,13 +4,13 @@ using BudgetAppProject.DomainModel.Utils;
 
 public class Category
 {
-    public string Id { get; private set; }
+    public string Id { get; init; }
 
     public string Name { get; private set; }
 
-    public bool IsDefault { get; private set; }
+    public bool IsDefault { get; init; }
 
-    public string UserId { get; private set; }
+    public string UserId { get; init; }
 
     public Category(
         string id,
@@ -39,10 +39,13 @@ public class Category
         );
     }
 
-    public void Rename(
-        string name
-    )
+    public void Rename(string name)
     {
+        if (IsDefault)
+        {
+            throw new InvalidOperationException("Cannot rename a default category.");
+        }
+
         Name = name;
     }
 }
