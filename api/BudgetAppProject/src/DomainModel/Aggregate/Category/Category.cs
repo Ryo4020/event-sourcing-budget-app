@@ -1,4 +1,4 @@
-namespace BudgetAppProject.DomainModel.Aggregate.MoneyOperation;
+namespace BudgetAppProject.DomainModel.Aggregate.Category;
 
 using BudgetAppProject.DomainModel.Utils;
 
