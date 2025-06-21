@@ -4,11 +4,11 @@ using BudgetAppProject.DomainModel.SeedWork;
 
 public class CategoryEdited : DomainEvent
 {
-    public required string EventTargetid { get; init; }
+    public string EventTargetid { get; init; }
     
-    public required string NewName { get; init; }
+    public string NewName { get; init; }
 
-    public CategoryEdited(DateTimeOffset eventAt, string categoryId, string newName) : base(eventAt)
+    public CategoryEdited(string categoryId, string newName) : base()
     {
         EventTargetid = categoryId;
         NewName = newName;

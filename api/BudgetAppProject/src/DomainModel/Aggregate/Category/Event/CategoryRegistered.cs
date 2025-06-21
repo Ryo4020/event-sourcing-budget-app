@@ -4,9 +4,9 @@ using BudgetAppProject.DomainModel.SeedWork;
 
 public class CategoryRegistered : DomainEvent
 {
-    public required Category EventTarget { get; init; }
+    public Category EventTarget { get; init; }
 
-    public CategoryRegistered (DateTimeOffset eventAt, Category category) : base(eventAt)
+    public CategoryRegistered (Category category) : base()
     {
         EventTarget = category;
     }

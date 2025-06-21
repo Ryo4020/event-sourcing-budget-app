@@ -8,9 +8,9 @@ public abstract class DomainEvent
 
     public DateTimeOffset EventAt { get; }
 
-    protected DomainEvent(DateTimeOffset eventAt)
+    protected DomainEvent()
     {
         EventId = UuidGenerator.NewUuid();
-        EventAt = eventAt;
+        EventAt = DatetimeHelper.Now();
     }
 }

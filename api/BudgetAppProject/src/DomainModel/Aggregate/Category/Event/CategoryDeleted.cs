@@ -4,9 +4,9 @@ using BudgetAppProject.DomainModel.SeedWork;
 
 public class CategoryDeleted : DomainEvent
 {
-    public required string EventTargetId { get; init; }
+    public string EventTargetId { get; init; }
 
-    public CategoryDeleted (DateTimeOffset eventAt, string categoryId) : base(eventAt)
+    public CategoryDeleted (string categoryId) : base()
     {
         EventTargetId = categoryId;
     }
