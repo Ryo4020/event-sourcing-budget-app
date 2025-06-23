@@ -5,7 +5,7 @@ using BudgetAppProject.DomainModel.Aggregate.MoneyOperation;
 
 public interface IMoneyOperationDataAccess
 {
-    MoneyOperation FindById(string id, string userId);
+    Task<MoneyOperation> FindById(string id, string userId);
 
-    ImmutableArray<MoneyOperation> FindAll(string userId);
+    Task<ImmutableArray<MoneyOperation>> FindAll(string userId);
 }
