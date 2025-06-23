@@ -6,6 +6,9 @@ builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 
 DIExtension.AddUsecases(builder.Services);
+DIExtension.AddDataAccess(builder.Services);
+DIExtension.AddPublishers(builder.Services);
+DIExtension.AddSubscribers(builder.Services);
 
 var app = builder.Build();
 
