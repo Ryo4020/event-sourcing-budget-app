@@ -8,5 +8,5 @@ public readonly record struct CategoryDto
 
     public required bool IsDefault { get; init; }
 
-    public required string UserId { get; init; }
+    public string? UserId { get; init; }
 };
