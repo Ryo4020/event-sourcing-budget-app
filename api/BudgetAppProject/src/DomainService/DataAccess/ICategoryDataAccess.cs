@@ -7,7 +7,7 @@ public interface ICategoryDataAccess
 {
     Task<Category> FindById(string id, string userId);
 
-    Task<Category> FindByName(string name, string userId);
+    Task<Category> FindByName(string name, string? userId);
 
     Task<ImmutableArray<Category>> FindAll(string userId);
 }
