@@ -29,6 +29,16 @@ public class MoneyOperationDataAccess :
         return await Task.FromResult(moneyOperations);
     }
 
+    public async Task<ImmutableArray<MoneyOperation>> FindAllByCategoryId(string categoryId)
+    {
+        ImmutableArray<MoneyOperation> moneyOperations =
+        [
+            new MoneyOperation("1", "Sample MoneyOperation", null, 1, DatetimeHelper.Now(), MoneyOperationType.Income, "userId", categoryId)
+        ];
+
+        return await Task.FromResult(moneyOperations);
+    }
+
     public async Task Handle(MoneyOperationRegistered domainEvent)
     {
         Console.WriteLine($"MoneyOperation Registered': {domainEvent.EventTarget.Title}");

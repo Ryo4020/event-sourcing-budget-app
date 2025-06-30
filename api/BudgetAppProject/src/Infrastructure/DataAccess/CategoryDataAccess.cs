@@ -18,9 +18,9 @@ public class CategoryDataAccess :
         return await Task.FromResult(category);
     }
 
-    public async Task<Category> FindByName(string name, string userId)
+    public async Task<Category> FindByName(string name, string? userId)
     {
-        Category category = new EditableCategory("sample-id", name, userId);
+        Category category = new EditableCategory("sample-id", name, "sample-user-id");
         return await Task.FromResult(category);
     }
 
