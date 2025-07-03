@@ -1,8 +1,6 @@
 namespace BudgetAppProject.DomainModel.Aggregate.Category.Event;
 
-using BudgetAppProject.DomainModel.SeedWork;
-
-public class CategoryDeleted : DomainEvent
+public class CategoryDeleted : CategoryEvent
 {
     public string EventTargetId { get; init; }
 

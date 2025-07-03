@@ -1,8 +1,6 @@
 namespace BudgetAppProject.DomainModel.Aggregate.Category.Event;
 
-using BudgetAppProject.DomainModel.SeedWork;
-
-public class CategoryRegistered : DomainEvent
+public class CategoryRegistered : CategoryEvent
 {
     public Category EventTarget { get; init; }
 

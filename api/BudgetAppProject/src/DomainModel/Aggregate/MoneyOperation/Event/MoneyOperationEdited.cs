@@ -1,8 +1,6 @@
 namespace BudgetAppProject.DomainModel.Aggregate.MoneyOperation.Event;
 
-using BudgetAppProject.DomainModel.SeedWork;
-
-public class MoneyOperationEdited : DomainEvent
+public class MoneyOperationEdited : MoneyOperationEvent
 {
     public MoneyOperation EventTarget { get; init; }
 
