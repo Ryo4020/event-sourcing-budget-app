@@ -13,9 +13,9 @@ public class MoneyOperationDataAccess :
     IEventSubscriber<MoneyOperationEdited>,
     IEventSubscriber<MoneyOperationDeleted>
 {
-    public async Task<MoneyOperation> FindById(string id, string userId)
+    public async Task<MoneyOperation> FindById(string id)
     {
-        MoneyOperation moneyOperation = new MoneyOperation(id, "Sample MoneyOperation", null, 1, DatetimeHelper.Now(), MoneyOperationType.Income, userId, "1");
+        MoneyOperation moneyOperation = new MoneyOperation(id, "Sample MoneyOperation", null, 1, DatetimeHelper.Now(), MoneyOperationType.Income, "1", "1");
         return await Task.FromResult(moneyOperation);
     }
 
@@ -29,7 +29,7 @@ public class MoneyOperationDataAccess :
         return await Task.FromResult(moneyOperations);
     }
 
-    public async Task<ImmutableArray<MoneyOperation>> FindAllByCategoryId(string categoryId)
+    public async Task<ImmutableArray<MoneyOperation>> FindAllByCategoryId(string categoryId, string? userId)
     {
         ImmutableArray<MoneyOperation> moneyOperations =
         [

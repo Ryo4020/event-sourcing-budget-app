@@ -12,9 +12,9 @@ public class CategoryDataAccess :
     IEventSubscriber<CategoryRenamed>,
     IEventSubscriber<CategoryDeleted>
 {
-    public async Task<Category> FindById(string id, string userId)
+    public async Task<Category> FindById(string id)
     {
-        Category category = new EditableCategory(id, "Sample Category", userId);
+        Category category = new EditableCategory(id, "Sample Category", "1");
         return await Task.FromResult(category);
     }
 

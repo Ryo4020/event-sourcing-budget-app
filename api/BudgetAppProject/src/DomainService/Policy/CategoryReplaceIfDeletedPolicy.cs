@@ -27,7 +27,7 @@ public class CategoryReplaceIfDeletedPolicy : IEventSubscriber<CategoryDeleted>
         var category = await _categoryDataAccess.FindByName(DefaultCategory.NameReplaceDeleted, null);
         if (category == null) throw new Exception("Default category for replacement if deleted not found");
 
-        var moneyOperations = await _moneyOperationDataAccess.FindAllByCategoryId(domainEvent.EventTargetId);
+        var moneyOperations = await _moneyOperationDataAccess.FindAllByCategoryId(domainEvent.EventTargetId, null);
         foreach (var moneyOperation in moneyOperations)
         {
             moneyOperation.Update(
