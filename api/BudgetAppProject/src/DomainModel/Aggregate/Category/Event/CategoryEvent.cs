@@ -4,6 +4,9 @@ using BudgetAppProject.DomainModel.SeedWork;
 
 public abstract class CategoryEvent : DomainEvent
 {
-    public CategoryEvent() : base()
+    protected CategoryEvent() : base()
+    {}
+    
+    protected CategoryEvent(string eventId, DateTimeOffset eventAt) : base(eventId, eventAt)
     {}
 }

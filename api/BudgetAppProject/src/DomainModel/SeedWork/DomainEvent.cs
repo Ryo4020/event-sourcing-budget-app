@@ -13,4 +13,10 @@ public abstract class DomainEvent
         EventId = UuidGenerator.NewUuid();
         EventAt = DatetimeHelper.Now();
     }
+
+    protected DomainEvent(string eventId, DateTimeOffset eventAt)
+    {
+        EventId = eventId;
+        EventAt = eventAt;
+    }
 }

@@ -4,6 +4,9 @@ using BudgetAppProject.DomainModel.SeedWork;
 
 public abstract class MoneyOperationEvent : DomainEvent
 {
-    public MoneyOperationEvent() : base()
+    protected MoneyOperationEvent() : base()
+    {}
+    
+    protected MoneyOperationEvent(string eventId, DateTimeOffset eventAt) : base(eventId, eventAt)
     {}
 }
