@@ -1,11 +1,13 @@
 namespace BudgetAppProject.Extensions;
 
+using Amazon.DynamoDBv2;
 using BudgetAppProject.Application.Usecase.RegisterCategory;
 using BudgetAppProject.DomainModel.Aggregate.Category.Event;
 using BudgetAppProject.DomainModel.Aggregate.MoneyOperation.Event;
 using BudgetAppProject.DomainService;
 using BudgetAppProject.DomainService.DataAccess;
 using BudgetAppProject.Infrastructure.DataAccess;
+using BudgetAppProject.Infrastructure.DataAccess.AWS;
 using BudgetAppProject.Infrastructure.Publisher.Category;
 
 public static class DIExtension
@@ -21,6 +23,22 @@ public static class DIExtension
     {
         services.AddTransient<ICategoryDataAccess, CategoryDataAccess>();
         services.AddTransient<IMoneyOperationDataAccess, MoneyOperationDataAccess>();
+
+        return services;
+    }
+
+    public static IServiceCollection AddAwsContexts(this IServiceCollection services)
+    {
+        services.AddSingleton(_ => {
+            var config = new AmazonDynamoDBConfig
+            {
+                MaxErrorRetry = 2
+            };
+            return new AmazonDynamoDBClient(config);
+        });
+
+        services.AddScoped<DynamoDbContext>();
+        services.AddScoped<MoneyOperationEventTableDao>();
 
         return services;
     }
