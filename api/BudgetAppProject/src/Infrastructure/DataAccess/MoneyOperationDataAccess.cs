@@ -3,9 +3,9 @@ namespace BudgetAppProject.Infrastructure.DataAccess;
 using System.Collections.Immutable;
 using BudgetAppProject.DomainModel.Aggregate.MoneyOperation;
 using BudgetAppProject.DomainModel.Aggregate.MoneyOperation.Event;
-using BudgetAppProject.DomainModel.Utils;
 using BudgetAppProject.DomainService;
 using BudgetAppProject.DomainService.DataAccess;
+using BudgetAppProject.Infrastructure.DataAccess.AWS;
 
 public class MoneyOperationDataAccess :
     IMoneyOperationDataAccess,
@@ -13,47 +13,99 @@ public class MoneyOperationDataAccess :
     IEventSubscriber<MoneyOperationEdited>,
     IEventSubscriber<MoneyOperationDeleted>
 {
+    private readonly MoneyOperationEventTableDao _moneyOperationEventTableDao;
+
+    public MoneyOperationDataAccess(MoneyOperationEventTableDao moneyOperationEventTableDao)
+    {
+        _moneyOperationEventTableDao = moneyOperationEventTableDao;
+    }
+
     public async Task<MoneyOperation> FindById(string id)
     {
-        MoneyOperation moneyOperation = new MoneyOperation(id, "Sample MoneyOperation", null, 1, DatetimeHelper.Now(), MoneyOperationType.Income, "1", "1");
-        return await Task.FromResult(moneyOperation);
+        var events = await _moneyOperationEventTableDao.GetEventsByIdAsync(id);
+
+        var moneyOperations = ReplayEvents(events);
+        if (moneyOperations.IsEmpty)
+        {
+            throw new KeyNotFoundException($"MoneyOperation with id '{id}' not found.");
+        } else if (moneyOperations.Length > 1)
+        {
+            throw new InvalidOperationException($"Multiple MoneyOperations found for id '{id}'.");
+        }
+
+        return moneyOperations[0];
     }
 
     public async Task<ImmutableArray<MoneyOperation>> FindAll(string userId)
     {
-        ImmutableArray<MoneyOperation> moneyOperations =
-        [
-            new MoneyOperation("1", "Sample MoneyOperation", null, 1, DatetimeHelper.Now(), MoneyOperationType.Income, userId, "1")
-        ];
+        var events = await _moneyOperationEventTableDao.GetEventsByUserIdAsync(userId);
+        if (events.IsEmpty)
+        {
+            return [];
+        }
 
-        return await Task.FromResult(moneyOperations);
+        return ReplayEvents(events);
     }
 
     public async Task<ImmutableArray<MoneyOperation>> FindAllByCategoryId(string categoryId, string? userId)
     {
-        ImmutableArray<MoneyOperation> moneyOperations =
-        [
-            new MoneyOperation("1", "Sample MoneyOperation", null, 1, DatetimeHelper.Now(), MoneyOperationType.Income, "userId", categoryId)
-        ];
+        var events = await _moneyOperationEventTableDao.GetEventsByCategoryIdAsync(categoryId, userId);
+        if (events.IsEmpty)
+        {
+            return [];
+        }
 
-        return await Task.FromResult(moneyOperations);
+        return ReplayEvents(events);
     }
 
     public async Task Handle(MoneyOperationRegistered domainEvent)
     {
-        Console.WriteLine($"MoneyOperation Registered': {domainEvent.EventTarget.Title}");
-        await Task.CompletedTask;
+        await _moneyOperationEventTableDao.AddRegisteredEventAsync(domainEvent);
     }
 
     public async Task Handle(MoneyOperationEdited domainEvent)
     {
-        Console.WriteLine($"MoneyOperation Edited': {domainEvent.EventTarget.Title}");
-        await Task.CompletedTask;
+        await _moneyOperationEventTableDao.AddEditedEventAsync(domainEvent);
     }
 
     public async Task Handle(MoneyOperationDeleted domainEvent)
     {
-        Console.WriteLine($"MoneyOperation Deleted': {domainEvent.EventTargetId}");
-        await Task.CompletedTask;
+        var moneyOperation = await FindById(domainEvent.EventTargetId);
+        if (moneyOperation == null)
+        {
+            throw new KeyNotFoundException($"MoneyOperation with id '{domainEvent.EventTargetId}' not found for deletion.");
+        }
+
+        await _moneyOperationEventTableDao.AddDeletedEventAsync(domainEvent, moneyOperation.UserId, moneyOperation.CategoryId);
+    }
+
+    private static ImmutableArray<MoneyOperation> ReplayEvents(ImmutableArray<MoneyOperationEvent> events)
+    {
+        var orderedEvents = events.OrderBy(e => e.EventAt);
+
+        var idToEntitiesMap = new Dictionary<string, MoneyOperation>();
+        foreach (var eventItem in events)
+        {
+            switch (eventItem)
+            {
+                case MoneyOperationRegistered registeredEvent:
+                    idToEntitiesMap[registeredEvent.EventTarget.Id] = registeredEvent.EventTarget;
+                    break;
+                case MoneyOperationEdited editedEvent:
+                    if (idToEntitiesMap.ContainsKey(editedEvent.EventTarget.Id))
+                    {
+                        idToEntitiesMap[editedEvent.EventTarget.Id] = editedEvent.EventTarget;
+                    }
+                    break;
+                case MoneyOperationDeleted deletedEvent:
+                    idToEntitiesMap.Remove(deletedEvent.EventTargetId);
+                    break;
+
+                default:
+                    throw new InvalidOperationException($"Unknown event type: {eventItem.GetType()}");
+            }
+        }
+
+        return [.. idToEntitiesMap.Values];
     }
 }
