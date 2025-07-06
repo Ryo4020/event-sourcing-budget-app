@@ -63,4 +63,24 @@ public static class DynamoDbAttributeHelper
 
         return null;
     }
+
+    public static bool GetRequiredBooleanAttributeValue(Dictionary<string, AttributeValue> item, string key)
+    {
+        if (item.TryGetValue(key, out var value) && bool.TryParse(value.BOOL.ToString(), out var boolValue))
+        {
+            return boolValue;
+        }
+
+        throw new KeyNotFoundException($"Attribute '{key}' not found or is null in the DynamoDB item.");
+    }
+
+    public static bool? GetNullableBooleanAttributeValue(Dictionary<string, AttributeValue> item, string key)
+    {
+        if (item.TryGetValue(key, out var value) && bool.TryParse(value.BOOL.ToString(), out var boolValue))
+        {
+            return boolValue;
+        }
+
+        return null;
+    }
 }

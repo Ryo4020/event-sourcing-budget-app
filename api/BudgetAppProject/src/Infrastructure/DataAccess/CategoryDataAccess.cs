@@ -5,6 +5,7 @@ using BudgetAppProject.DomainModel.Aggregate.Category;
 using BudgetAppProject.DomainModel.Aggregate.Category.Event;
 using BudgetAppProject.DomainService;
 using BudgetAppProject.DomainService.DataAccess;
+using BudgetAppProject.Infrastructure.DataAccess.AWS;
 
 public class CategoryDataAccess :
     ICategoryDataAccess,
@@ -12,45 +13,41 @@ public class CategoryDataAccess :
     IEventSubscriber<CategoryRenamed>,
     IEventSubscriber<CategoryDeleted>
 {
+    private readonly CategoryStateTableDao _categoryStateTableDao;
+
+    public CategoryDataAccess(CategoryStateTableDao categoryStateTableDao)
+    {
+        _categoryStateTableDao = categoryStateTableDao;
+    }
+
     public async Task<Category> FindById(string id)
     {
-        Category category = new EditableCategory(id, "Sample Category", "1");
-        return await Task.FromResult(category);
+        return await _categoryStateTableDao.GetByIdAsync(id);
     }
 
     public async Task<Category> FindByName(string name, string? userId)
     {
-        Category category = new EditableCategory("sample-id", name, "sample-user-id");
-        return await Task.FromResult(category);
+        var isDefault = string.IsNullOrEmpty(userId);
+        return await _categoryStateTableDao.GetByNameAsync(name, isDefault, userId);
     }
 
     public async Task<ImmutableArray<Category>> FindAll(string userId)
     {
-        ImmutableArray<Category> categories =
-        [
-            new EditableCategory("1", "Food", userId),
-            new EditableCategory("2", "Transport", userId),
-            new EditableCategory("3", "Entertainment", userId)
-        ];
-
-        return await Task.FromResult(categories);
+        return await _categoryStateTableDao.GetAllByUserIdAsync(userId);
     }
 
     public async Task Handle(CategoryRegistered domainEvent)
     {
-        Console.WriteLine($"Category Registered: {domainEvent.EventTarget.Name}");
-        await Task.CompletedTask;
+        await _categoryStateTableDao.AddStateAsync(domainEvent.EventTarget);
     }
 
     public async Task Handle(CategoryRenamed domainEvent)
     {
-        Console.WriteLine($"Category Renamed: {domainEvent.EventTargetId} to {domainEvent.NewName}");
-        await Task.CompletedTask;
+        await _categoryStateTableDao.RenameAsync(domainEvent.EventTargetId, domainEvent.NewName);
     }
 
     public async Task Handle(CategoryDeleted domainEvent)
     {
-        Console.WriteLine($"Category Deleted: {domainEvent.EventTargetId}");
-        await Task.CompletedTask;
+        await _categoryStateTableDao.DeleteAsync(domainEvent.EventTargetId);
     }
 }
