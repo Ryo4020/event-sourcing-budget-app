@@ -18,7 +18,12 @@ export const generateMoneyOperationEventTable = (scope: Construct) : dynamodb.Ta
             {
                 indexName: 'user-id-index',
                 partitionKey: { name: 'user_id', type: dynamodb.AttributeType.STRING },
-            }
+            },
+            {
+                indexName: 'category-id-index',
+                partitionKey: { name: 'event_target_category_id', type: dynamodb.AttributeType.STRING },
+                sortKey: { name: 'user_id', type: dynamodb.AttributeType.STRING },
+            },
         ],
         billing: dynamodb.Billing.onDemand(),
         removalPolicy: cdk.RemovalPolicy.DESTROY,
