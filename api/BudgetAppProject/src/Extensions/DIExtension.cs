@@ -39,6 +39,7 @@ public static class DIExtension
 
         services.AddSingleton<DynamoDbContext>();
         services.AddScoped<MoneyOperationEventTableDao>();
+        services.AddScoped<CategoryStateTableDao>();
 
         return services;
     }
