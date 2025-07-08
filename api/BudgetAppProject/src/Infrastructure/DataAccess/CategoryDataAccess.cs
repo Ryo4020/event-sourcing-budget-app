@@ -28,7 +28,13 @@ public class CategoryDataAccess :
     public async Task<Category> FindByName(string name, string? userId)
     {
         var isDefault = string.IsNullOrEmpty(userId);
-        return await _categoryStateTableDao.GetByNameAsync(name, isDefault, userId);
+        var category = await _categoryStateTableDao.GetByNameAsync(name, isDefault, userId);
+        if (category == null)
+        {
+            throw new KeyNotFoundException($"Category with name '{name}' not found.");
+        }
+
+        return category;
     }
 
     public async Task<ImmutableArray<Category>> FindAll(string userId)
@@ -38,11 +44,35 @@ public class CategoryDataAccess :
 
     public async Task Handle(CategoryRegistered domainEvent)
     {
+        string? categoryUserId = domainEvent.EventTarget is EditableCategory editableCategory ? editableCategory.UserId : null;
+
+        var duplicate = await _categoryStateTableDao.GetByNameAsync(
+            domainEvent.EventTarget.Name,
+            domainEvent.EventTarget is DefaultCategory,
+            categoryUserId
+        );
+        if (duplicate != null)
+        {
+            throw new InvalidOperationException($"Category with name '{domainEvent.EventTarget.Name}' already exists.");
+        }
+
         await _categoryStateTableDao.AddStateAsync(domainEvent.EventTarget);
     }
 
     public async Task Handle(CategoryRenamed domainEvent)
     {
+        var existingCategory = await _categoryStateTableDao.GetByIdAsync(domainEvent.EventTargetId);
+
+        var duplicate = await _categoryStateTableDao.GetByNameAsync(
+            domainEvent.NewName,
+            existingCategory.IsDefault,
+            existingCategory is EditableCategory editableCategory ? editableCategory.UserId : null
+        );
+        if (duplicate != null)
+        {
+            throw new InvalidOperationException($"Category with name '{domainEvent.NewName}' already exists.");
+        }
+
         await _categoryStateTableDao.RenameAsync(domainEvent.EventTargetId, domainEvent.NewName);
     }
 

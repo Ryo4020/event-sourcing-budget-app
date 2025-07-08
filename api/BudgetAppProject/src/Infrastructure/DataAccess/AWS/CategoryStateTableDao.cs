@@ -37,7 +37,7 @@ public class CategoryStateTableDao
         return MapFromDynamoDbItemToCategory(response.Item);
     }
 
-    public async Task<Category> GetByNameAsync(string name, bool isDefault, string? userId)
+    public async Task<Category?> GetByNameAsync(string name, bool isDefault, string? userId)
     {
         var filterExpression = "name = :name AND is_default = :isDefault";
         var expressionAttributeValues = new Dictionary<string, AttributeValue>
@@ -63,7 +63,10 @@ public class CategoryStateTableDao
         var response = await _dynamoDbContext.DoScanAsync(request);
         if (response.Items.Count == 0)
         {
-            throw new KeyNotFoundException($"Category with name '{name}' not found.");
+            return null;
+        } else if (response.Items.Count > 1)
+        {
+            throw new InvalidOperationException($"Multiple categories found with name '{name}'.");
         }
 
         return MapFromDynamoDbItemToCategory(response.Items[0]);
