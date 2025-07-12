@@ -5,8 +5,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 
+EnvironmentVariablesExtension.SetDatabaseVariables();
+
 DIExtension.AddUsecases(builder.Services);
 DIExtension.AddDataAccess(builder.Services);
+DIExtension.AddAwsContexts(builder.Services);
 DIExtension.AddPublishers(builder.Services);
 DIExtension.AddSubscribers(builder.Services);
 

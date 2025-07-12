@@ -2,7 +2,7 @@ namespace BudgetAppProject.DomainModel.Utils;
 
 public static class EnumHelper
 {
-    public static TEnum ParseEnumFromInt<TEnum>(int value) where TEnum : struct, Enum
+    public static TEnum ParseEnumFromInt<TEnum>(int value) where TEnum : Enum
     {
         if (!Enum.IsDefined(typeof(TEnum), value))
         {

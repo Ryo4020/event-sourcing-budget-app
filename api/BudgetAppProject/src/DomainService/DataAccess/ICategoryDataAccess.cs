@@ -5,7 +5,7 @@ using BudgetAppProject.DomainModel.Aggregate.Category;
 
 public interface ICategoryDataAccess
 {
-    Task<Category> FindById(string id, string userId);
+    Task<Category> FindById(string id);
 
     Task<Category> FindByName(string name, string? userId);
 
