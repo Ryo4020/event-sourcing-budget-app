@@ -39,10 +39,10 @@ public class CategoryStateTableDao
 
     public async Task<Category?> GetByNameAsync(string name, bool isDefault, string? userId)
     {
-        var filterExpression = "name = :name AND is_default = :isDefault";
+        var filterExpression = "category_name = :category_name AND is_default = :isDefault";
         var expressionAttributeValues = new Dictionary<string, AttributeValue>
         {
-            { ":name", new AttributeValue { S = name } },
+            { ":category_name", new AttributeValue { S = name } },
             { ":isDefault", new AttributeValue { BOOL = isDefault } }
         };
 
@@ -98,7 +98,7 @@ public class CategoryStateTableDao
         var item = new Dictionary<string, AttributeValue>
         {
             { "category_id", new AttributeValue { S = category.Id } },
-            { "name", new AttributeValue { S = category.Name } },
+            { "category_name", new AttributeValue { S = category.Name } },
             { "is_default", new AttributeValue { BOOL = category.IsDefault } }
         };
 
@@ -127,7 +127,7 @@ public class CategoryStateTableDao
                 { "category_id", new AttributeValue { S = categoryId } }
             },
             ConditionExpression = "attribute_exists(category_id)",
-            UpdateExpression = "SET name = :newName",
+            UpdateExpression = "SET category_name = :newName",
             ExpressionAttributeValues = new Dictionary<string, AttributeValue>
             {
                 { ":newName", new AttributeValue { S = newName } }
@@ -158,13 +158,13 @@ public class CategoryStateTableDao
         {
             return new DefaultCategory(
                 id: DynamoDbAttributeHelper.GetRequiredStringAttributeValue(item, "category_id"),
-                name: DynamoDbAttributeHelper.GetRequiredStringAttributeValue(item, "name")
+                name: DynamoDbAttributeHelper.GetRequiredStringAttributeValue(item, "category_name")
             );
         }
 
         return new EditableCategory(
             id: DynamoDbAttributeHelper.GetRequiredStringAttributeValue(item, "category_id"),
-            name: DynamoDbAttributeHelper.GetRequiredStringAttributeValue(item, "name"),
+            name: DynamoDbAttributeHelper.GetRequiredStringAttributeValue(item, "category_name"),
             userId: DynamoDbAttributeHelper.GetRequiredStringAttributeValue(item, "user_id")
         );
     }
