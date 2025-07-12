@@ -25,10 +25,10 @@ public class MoneyOperationDataAccess :
         var events = await _moneyOperationEventTableDao.GetEventsByIdAsync(id);
 
         var moneyOperations = ReplayEvents(events);
-        if (moneyOperations.IsEmpty)
+        if (moneyOperations.Count == 0)
         {
             throw new KeyNotFoundException($"MoneyOperation with id '{id}' not found.");
-        } else if (moneyOperations.Length > 1)
+        } else if (moneyOperations.Count > 1)
         {
             throw new InvalidOperationException($"Multiple MoneyOperations found for id '{id}'.");
         }
@@ -44,7 +44,7 @@ public class MoneyOperationDataAccess :
             return [];
         }
 
-        return ReplayEvents(events);
+        return ReplayEvents(events).ToImmutableArray();
     }
 
     public async Task<ImmutableArray<MoneyOperation>> FindAllByCategoryId(string categoryId, string? userId)
@@ -55,7 +55,7 @@ public class MoneyOperationDataAccess :
             return [];
         }
 
-        return ReplayEvents(events);
+        return ReplayEvents(events).ToImmutableArray();
     }
 
     public async Task Handle(MoneyOperationRegistered domainEvent)
@@ -79,7 +79,7 @@ public class MoneyOperationDataAccess :
         await _moneyOperationEventTableDao.AddDeletedEventAsync(domainEvent, moneyOperation.UserId, moneyOperation.CategoryId);
     }
 
-    private static ImmutableArray<MoneyOperation> ReplayEvents(ImmutableArray<MoneyOperationEvent> events)
+    private static List<MoneyOperation> ReplayEvents(ImmutableArray<MoneyOperationEvent> events)
     {
         var orderedEvents = events.OrderBy(e => e.EventAt);
 

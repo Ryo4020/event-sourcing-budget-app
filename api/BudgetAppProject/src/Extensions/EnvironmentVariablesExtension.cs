@@ -5,13 +5,13 @@ public static class EnvironmentVariablesExtension
     public static void SetDatabaseVariables()
     {
         string environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
-        string stage = GetStageByEnrionment(environmentName);
+        string stage = GetStageByEnvironment(environmentName);
 
         Environment.SetEnvironmentVariable("MONEY_OPERATION_EVENT_TABLE_NAME", GetServiceResourceName("MoneyOperationEventTable", stage));
         Environment.SetEnvironmentVariable("CATEGORY_STATE_TABLE_NAME", GetServiceResourceName("CategoryStateTable", stage));
     }
 
-    private static string GetStageByEnrionment(string environmentName)
+    private static string GetStageByEnvironment(string environmentName)
     {
         return environmentName switch
         {
