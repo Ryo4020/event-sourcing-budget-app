@@ -53,7 +53,7 @@ public class CategoryDataAccess :
         );
         if (duplicate != null)
         {
-            throw new InvalidOperationException($"Category with name '{domainEvent.EventTarget.Name}' already exists.");
+            throw new ArgumentException($"Category with name '{domainEvent.EventTarget.Name}' already exists.");
         }
 
         await _categoryStateTableDao.AddStateAsync(domainEvent.EventTarget);
@@ -70,7 +70,7 @@ public class CategoryDataAccess :
         );
         if (duplicate != null)
         {
-            throw new InvalidOperationException($"Category with name '{domainEvent.NewName}' already exists.");
+            throw new ArgumentException($"Category with name '{domainEvent.NewName}' already exists.");
         }
 
         await _categoryStateTableDao.RenameAsync(domainEvent.EventTargetId, domainEvent.NewName);
