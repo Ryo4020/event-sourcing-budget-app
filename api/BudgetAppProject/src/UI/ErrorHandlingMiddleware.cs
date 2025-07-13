@@ -70,19 +70,6 @@ public class ErrorHandlingMiddleware
             context.Response.ContentType = "application/problem+json";
             await context.Response.WriteAsJsonAsync(problem);
         }
-        catch (InvalidOperationException ex)
-        {
-            var problem = new ProblemDetails
-            {
-                Status = 500,
-                Title = "Invalid Program Inplementation",
-                Detail = ex.Message,
-                Instance = context.Request.Path
-            };
-            context.Response.StatusCode = 409;
-            context.Response.ContentType = "application/problem+json";
-            await context.Response.WriteAsJsonAsync(problem);
-        }
         catch (Exception ex)
         {
             var problem = new ProblemDetails
