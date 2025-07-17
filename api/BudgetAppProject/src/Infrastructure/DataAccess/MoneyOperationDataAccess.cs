@@ -30,7 +30,7 @@ public class MoneyOperationDataAccess :
             throw new KeyNotFoundException($"MoneyOperation with id '{id}' not found.");
         } else if (moneyOperations.Count > 1)
         {
-            throw new InvalidOperationException($"Multiple MoneyOperations found for id '{id}'.");
+            throw new InvalidDataException($"Multiple MoneyOperations found for id '{id}'.");
         }
 
         return moneyOperations[0];

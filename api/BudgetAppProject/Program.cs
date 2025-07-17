@@ -1,4 +1,5 @@
 using BudgetAppProject.Extensions;
+using BudgetAppProject.UI;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,5 +25,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.MapControllers();
+app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.Run();

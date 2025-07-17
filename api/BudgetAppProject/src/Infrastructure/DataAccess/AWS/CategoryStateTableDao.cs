@@ -66,7 +66,7 @@ public class CategoryStateTableDao
             return null;
         } else if (response.Items.Count > 1)
         {
-            throw new InvalidOperationException($"Multiple categories found with name '{name}'.");
+            throw new InvalidDataException($"Multiple categories found with name '{name}'.");
         }
 
         return MapFromDynamoDbItemToCategory(response.Items[0]);

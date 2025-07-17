@@ -21,9 +21,6 @@ public readonly record struct RegisterMoneyOperationRequest
     [AllowedValues(1, 2, ErrorMessage = "Type must be either 1 (Income) or 2 (Expense).")]
     public required uint Type { get; init; }
 
-    [Required(ErrorMessage = "UserId is required.", AllowEmptyStrings = false)]
-    public required string UserId { get; init; }
-
     [Required(ErrorMessage = "CategoryId is required.", AllowEmptyStrings = false)]
     public required string CategoryId { get; init; }
 };

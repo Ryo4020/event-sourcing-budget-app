@@ -4,9 +4,6 @@ using System.ComponentModel.DataAnnotations;
 
 public readonly record struct GetMoneyOperationsRequest
 {
-    [Required(ErrorMessage = "UserId is required.", AllowEmptyStrings = false)]
-    public required string UserId { get; init; }
-
     public string? SearchTitleText { get; init; }
 
     [DataType(DataType.DateTime, ErrorMessage = "OperationStartAt must be a valid date and time.")]
