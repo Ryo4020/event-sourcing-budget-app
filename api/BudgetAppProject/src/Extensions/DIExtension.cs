@@ -1,6 +1,7 @@
 namespace BudgetAppProject.Extensions;
 
 using Amazon.DynamoDBv2;
+using BudgetAppProject.Application.Common;
 using BudgetAppProject.Application.Usecase.RegisterCategory;
 using BudgetAppProject.DomainModel.Aggregate.Category.Event;
 using BudgetAppProject.DomainModel.Aggregate.MoneyOperation.Event;
@@ -8,6 +9,7 @@ using BudgetAppProject.DomainService;
 using BudgetAppProject.DomainService.DataAccess;
 using BudgetAppProject.Infrastructure.DataAccess;
 using BudgetAppProject.Infrastructure.DataAccess.AWS;
+using BudgetAppProject.Infrastructure.HttpContext;
 using BudgetAppProject.Infrastructure.Publisher.Category;
 
 public static class DIExtension
@@ -41,6 +43,13 @@ public static class DIExtension
         services.AddScoped<MoneyOperationEventTableDao>();
         services.AddScoped<CategoryStateTableDao>();
 
+        return services;
+    }
+
+    public static IServiceCollection AddHttpContext(this IServiceCollection services)
+    {
+        services.AddHttpContextAccessor();
+        services.AddScoped<IUserContext, HttpUserContext>();
         return services;
     }
 
