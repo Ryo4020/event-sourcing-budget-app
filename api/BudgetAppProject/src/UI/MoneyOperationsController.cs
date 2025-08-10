@@ -1,12 +1,14 @@
 namespace BudgetAppProject.UI;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using BudgetAppProject.Application.Usecase.DeleteMoneyOperation;
 using BudgetAppProject.Application.Usecase.EditMoneyOperation;
 using BudgetAppProject.Application.Usecase.GetIncomeAndExpenses;
 using BudgetAppProject.Application.Usecase.GetMoneyOperations;
 using BudgetAppProject.Application.Usecase.RegisterMoneyOperation;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class MoneyOperationsController : ControllerBase
@@ -64,10 +66,10 @@ public class MoneyOperationsController : ControllerBase
         return Ok(response);
     }
 
-    [HttpGet("income-and-expenses/{userId}")]
-    public async Task<IActionResult> GetIncomeAndExpenses([FromRoute] string userId)
+    [HttpGet("income-and-expenses")]
+    public async Task<IActionResult> GetIncomeAndExpenses()
     {
-        var request = new GetIncomeAndExpensesRequest() { UserId = userId };
+        var request = new GetIncomeAndExpensesRequest() {};
         var response = await _getIncomeAndExpensesUsecase.HandleAsync(request);
 
         return Ok(response);

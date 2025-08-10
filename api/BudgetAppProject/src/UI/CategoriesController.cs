@@ -1,6 +1,7 @@
 namespace BudgetAppProject.UI;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using BudgetAppProject.Application.Usecase.DeleteCategory;
 using BudgetAppProject.Application.Usecase.GetCategories;
 using BudgetAppProject.Application.Usecase.RegisterCategory;
@@ -8,6 +9,7 @@ using BudgetAppProject.Application.Usecase.RenameCategory;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class CategoriesController : ControllerBase
 {
     private readonly IRegisterCategoryUsecase _registerCategoryUsecase;
@@ -53,10 +55,10 @@ public class CategoriesController : ControllerBase
         return NoContent();
     }
 
-    [HttpGet("{userId}")]
-    public async Task<IActionResult> GetAll([FromRoute] string userId)
+    [HttpGet()]
+    public async Task<IActionResult> GetAll()
     {
-        var request = new GetCategoriesRequest() { UserId = userId };
+        var request = new GetCategoriesRequest() {};
         var categories = await _getCategoriesUsecase.HandleAsync(request);
 
         return Ok(categories);
