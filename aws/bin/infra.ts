@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 import * as cdk from 'aws-cdk-lib';
 
-import { TableStack } from '../lib/table-stack';
+import { AuthStack } from '../lib/auth/auth-stack';
+import { TableStack } from '../lib/table/table-stack';
 import { formatServiceName } from '../util/format-service-name';
 
 const env = {
@@ -10,4 +11,5 @@ const env = {
 }
 
 const app = new cdk.App();
+new AuthStack(app, formatServiceName('AuthStack'), { env });
 new TableStack(app, formatServiceName('TableStack'), { env });

@@ -2,7 +2,7 @@ import * as cdk from 'aws-cdk-lib'
 import { Construct } from 'constructs'
 import * as dynamodb from 'aws-cdk-lib/aws-dynamodb'
 
-import { formatServiceName } from '../../util/format-service-name';
+import { formatServiceName } from '../../../util/format-service-name';
 
 export const generateCategoryStateTable = (scope: Construct) : dynamodb.TableV2 => {
     const table = new dynamodb.TableV2(scope, 'CategoryStateTable', {

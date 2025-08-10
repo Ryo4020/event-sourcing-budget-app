@@ -16,3 +16,5 @@ Here are stacks and resources to be deployed by this cdk.
 
 - TableStack
     - DynamoDB tables
+- AuthStack
+    - Cognito user pool
