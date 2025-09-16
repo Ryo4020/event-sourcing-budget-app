@@ -17,8 +17,20 @@ public class GetMoneyOperationsUsecase : IGetMoneyOperationsUsecase
     public async Task<GetMoneyOperationsResponse> HandleAsync(GetMoneyOperationsRequest request)
     {
         var userId = _userContext.GetUserId();
-        var moneyOperations = await _moneyOperationDataAccess.GetByUserIdAsync(userId);
+        var moneyOperations = await _moneyOperationDataAccess.FindAll(userId);
 
-        return new GetMoneyOperationsResponse { MoneyOperations = moneyOperations };
+        var moneyOperationDtos = moneyOperations.Select(m => new BudgetAppProject.Application.Dto.MoneyOperationDto
+        {
+            Id = m.Id,
+            Title = m.Title,
+            Description = m.Description,
+            Price = m.Price,
+            OperationAt = m.OperationAt,
+            Type = (uint)m.Type,
+            UserId = m.UserId,
+            CategoryId = m.CategoryId
+        }).ToList();
+
+        return new GetMoneyOperationsResponse { MoneyOperations = moneyOperationDtos };
     }
 }

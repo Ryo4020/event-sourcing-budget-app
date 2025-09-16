@@ -17,13 +17,30 @@ public class GetIncomeAndExpensesUsecase : IGetIncomeAndExpensesUsecase
     public async Task<GetIncomeAndExpensesResponse> HandleAsync(GetIncomeAndExpensesRequest request)
     {
         var userId = _userContext.GetUserId();
-        var incomeAndExpenses = await _moneyOperationDataAccess.GetIncomeAndExpensesByUserIdAsync(userId);
+        var moneyOperations = await _moneyOperationDataAccess.FindAll(userId);
+
+        uint totalIncome = 0;
+        uint totalExpenses = 0;
+
+        foreach (var operation in moneyOperations)
+        {
+            if (operation.Type == DomainModel.Aggregate.MoneyOperation.MoneyOperationType.Income)
+            {
+                totalIncome += operation.Price;
+            }
+            else if (operation.Type == DomainModel.Aggregate.MoneyOperation.MoneyOperationType.Expense)
+            {
+                totalExpenses += operation.Price;
+            }
+        }
+
+        int totalBalance = (int)totalIncome - (int)totalExpenses;
 
         return new GetIncomeAndExpensesResponse
         {
-            TotalIncome = incomeAndExpenses.TotalIncome,
-            TotalExpenses = incomeAndExpenses.TotalExpenses,
-            TotalBalance = incomeAndExpenses.TotalBalance
+            TotalIncome = totalIncome,
+            TotalExpenses = totalExpenses,
+            TotalBalance = totalBalance
         };
     }
 }

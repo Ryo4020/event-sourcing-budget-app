@@ -17,8 +17,16 @@ public class GetCategoriesUsecase : IGetCategoriesUsecase
     public async Task<GetCategoriesResponse> HandleAsync(GetCategoriesRequest request)
     {
         var userId = _userContext.GetUserId();
-        var categories = await _categoryDataAccess.GetByUserIdAsync(userId);
+        var categories = await _categoryDataAccess.FindAll(userId);
 
-        return new GetCategoriesResponse { Categories = categories };
+        var categoryDtos = categories.Select(c => new BudgetAppProject.Application.Dto.CategoryDto
+        {
+            Id = c.Id,
+            Name = c.Name,
+            IsDefault = c.IsDefault,
+            UserId = c is BudgetAppProject.DomainModel.Aggregate.Category.EditableCategory editableCategory ? editableCategory.UserId : null
+        }).ToList();
+
+        return new GetCategoriesResponse { Categories = categoryDtos };
     }
 }
