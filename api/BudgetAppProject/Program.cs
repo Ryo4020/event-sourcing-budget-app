@@ -11,6 +11,7 @@ EnvironmentVariablesExtension.SetDatabaseVariables();
 DIExtension.AddUsecases(builder.Services);
 DIExtension.AddDataAccess(builder.Services);
 DIExtension.AddAwsContexts(builder.Services);
+DIExtension.AddHttpContext(builder.Services);
 DIExtension.AddPublishers(builder.Services);
 DIExtension.AddSubscribers(builder.Services);
 
