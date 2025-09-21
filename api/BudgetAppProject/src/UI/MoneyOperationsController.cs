@@ -32,7 +32,7 @@ public class MoneyOperationsController : ControllerBase
         _getIncomeAndExpensesUsecase = getIncomeAndExpensesUsecase;
     }
 
-    [HttpPost("new")]
+    [HttpPost]
     public async Task<IActionResult> Register([FromBody] RegisterMoneyOperationRequest request)
     {
         await _registerMoneyOperationUsecase.HandleAsync(request);
@@ -40,7 +40,7 @@ public class MoneyOperationsController : ControllerBase
         return Created();
     }
 
-    [HttpPut("edit")]
+    [HttpPut]
     public async Task<IActionResult> Edit([FromBody] EditMoneyOperationRequest request)
     {
         await _editMoneyOperationUsecase.HandleAsync(request);
@@ -64,10 +64,10 @@ public class MoneyOperationsController : ControllerBase
         return Ok(response);
     }
 
-    [HttpGet("income-and-expenses/{userId}")]
-    public async Task<IActionResult> GetIncomeAndExpenses([FromRoute] string userId)
+    [HttpGet("income-and-expenses")]
+    public async Task<IActionResult> GetIncomeAndExpenses()
     {
-        var request = new GetIncomeAndExpensesRequest() { UserId = userId };
+        var request = new GetIncomeAndExpensesRequest() {};
         var response = await _getIncomeAndExpensesUsecase.HandleAsync(request);
 
         return Ok(response);

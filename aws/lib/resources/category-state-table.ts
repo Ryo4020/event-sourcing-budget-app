@@ -8,7 +8,6 @@ export const generateCategoryStateTable = (scope: Construct) : dynamodb.TableV2 
     const table = new dynamodb.TableV2(scope, 'CategoryStateTable', {
         tableName: formatServiceName('CategoryStateTable'),
         partitionKey: { name: 'category_id', type: dynamodb.AttributeType.STRING },
-        sortKey: { name: 'user_id', type: dynamodb.AttributeType.STRING },
         globalSecondaryIndexes: [
             {
                 indexName: 'user-id-index',

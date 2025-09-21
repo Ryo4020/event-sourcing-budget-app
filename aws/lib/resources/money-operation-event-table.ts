@@ -8,12 +8,10 @@ export const generateMoneyOperationEventTable = (scope: Construct) : dynamodb.Ta
     const table = new dynamodb.TableV2(scope, 'MoneyOperationEventTable', {
         tableName: formatServiceName('MoneyOperationEventTable'),
         partitionKey: { name: 'event_id', type: dynamodb.AttributeType.STRING },
-        sortKey: { name: 'user_id', type: dynamodb.AttributeType.STRING },
         globalSecondaryIndexes: [
             {
                 indexName: 'event-target-index',
-                partitionKey: { name: 'event_target_id', type: dynamodb.AttributeType.STRING },
-                sortKey: { name: 'user_id', type: dynamodb.AttributeType.STRING },
+                partitionKey: { name: 'event_target_id', type: dynamodb.AttributeType.STRING }
             },
             {
                 indexName: 'user-id-index',
