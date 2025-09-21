@@ -2,7 +2,7 @@ namespace BudgetAppProject.Application.Usecase.GetMoneyOperations;
 
 using System.ComponentModel.DataAnnotations;
 
-public readonly record struct GetMoneyOperationsRequest
+public record GetMoneyOperationsRequest
 {
     public string? SearchTitleText { get; init; }
 
@@ -12,7 +12,7 @@ public readonly record struct GetMoneyOperationsRequest
     [DataType(DataType.DateTime, ErrorMessage = "OperationEndAt must be a valid date and time.")]
     public DateTimeOffset? OperationEndAt { get; init; }
 
-    [AllowedValues(1, 2, ErrorMessage = "Type must be either 1 (Income) or 2 (Expense).")]
+    [AllowedValues(1, 2, null, ErrorMessage = "Type must be either 1 (Income) or 2 (Expense).")]
     public int? Type { get; init; }
 
     public List<string>? CategoryIds { get; init; }
