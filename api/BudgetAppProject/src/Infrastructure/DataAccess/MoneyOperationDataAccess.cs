@@ -28,7 +28,8 @@ public class MoneyOperationDataAccess :
         if (moneyOperations.Count == 0)
         {
             throw new KeyNotFoundException($"MoneyOperation with id '{id}' not found.");
-        } else if (moneyOperations.Count > 1)
+        }
+        else if (moneyOperations.Count > 1)
         {
             throw new InvalidDataException($"Multiple MoneyOperations found for id '{id}'.");
         }
@@ -65,6 +66,12 @@ public class MoneyOperationDataAccess :
 
     public async Task Handle(MoneyOperationEdited domainEvent)
     {
+        var moneyOperation = await FindById(domainEvent.EventTarget.Id);
+        if (moneyOperation == null)
+        {
+            throw new KeyNotFoundException($"MoneyOperation with id '{domainEvent.EventTarget.Id}' not found for edit.");
+        }
+
         await _moneyOperationEventTableDao.AddEditedEventAsync(domainEvent);
     }
 
@@ -84,7 +91,7 @@ public class MoneyOperationDataAccess :
         var orderedEvents = events.OrderBy(e => e.EventAt);
 
         var idToEntitiesMap = new Dictionary<string, MoneyOperation>();
-        foreach (var eventItem in events)
+        foreach (var eventItem in orderedEvents)
         {
             switch (eventItem)
             {
