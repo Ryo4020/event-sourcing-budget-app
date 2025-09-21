@@ -53,10 +53,10 @@ public class CategoriesController : ControllerBase
         return NoContent();
     }
 
-    [HttpGet("{userId}")]
-    public async Task<IActionResult> GetAll([FromRoute] string userId)
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
     {
-        var request = new GetCategoriesRequest() { UserId = userId };
+        var request = new GetCategoriesRequest() {};
         var categories = await _getCategoriesUsecase.HandleAsync(request);
 
         return Ok(categories);

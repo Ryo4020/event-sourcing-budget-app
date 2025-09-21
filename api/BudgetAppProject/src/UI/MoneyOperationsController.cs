@@ -64,10 +64,10 @@ public class MoneyOperationsController : ControllerBase
         return Ok(response);
     }
 
-    [HttpGet("income-and-expenses/{userId}")]
-    public async Task<IActionResult> GetIncomeAndExpenses([FromRoute] string userId)
+    [HttpGet("income-and-expenses")]
+    public async Task<IActionResult> GetIncomeAndExpenses()
     {
-        var request = new GetIncomeAndExpensesRequest() { UserId = userId };
+        var request = new GetIncomeAndExpensesRequest() {};
         var response = await _getIncomeAndExpensesUsecase.HandleAsync(request);
 
         return Ok(response);
