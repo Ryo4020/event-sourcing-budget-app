@@ -7,6 +7,7 @@ using BudgetAppProject.DomainModel.Aggregate.Category.Event;
 using BudgetAppProject.DomainModel.Aggregate.MoneyOperation.Event;
 using BudgetAppProject.DomainService;
 using BudgetAppProject.DomainService.DataAccess;
+using BudgetAppProject.DomainService.Policy;
 using BudgetAppProject.Infrastructure.DataAccess;
 using BudgetAppProject.Infrastructure.DataAccess.AWS;
 using BudgetAppProject.Infrastructure.HttpContext;
@@ -71,6 +72,7 @@ public static class DIExtension
         services.AddScoped<IEventSubscriber<CategoryRegistered>, CategoryDataAccess>();
         services.AddScoped<IEventSubscriber<CategoryRenamed>, CategoryDataAccess>();
         services.AddScoped<IEventSubscriber<CategoryDeleted>, CategoryDataAccess>();
+        services.AddScoped<IEventSubscriber<CategoryDeleted>, CategoryReplaceIfDeletedPolicy>();
         services.AddScoped<IEventSubscriber<MoneyOperationRegistered>, MoneyOperationDataAccess>();
         services.AddScoped<IEventSubscriber<MoneyOperationEdited>, MoneyOperationDataAccess>();
         services.AddScoped<IEventSubscriber<MoneyOperationDeleted>, MoneyOperationDataAccess>();
