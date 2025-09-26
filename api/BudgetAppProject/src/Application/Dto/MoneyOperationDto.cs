@@ -14,7 +14,5 @@ public readonly record struct MoneyOperationDto
 
     public required uint Type { get; init; }
 
-    public required string UserId { get; init; }
-
     public required string CategoryId { get; init; }
 };

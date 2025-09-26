@@ -32,7 +32,7 @@ public class MoneyOperationsController : ControllerBase
         _getIncomeAndExpensesUsecase = getIncomeAndExpensesUsecase;
     }
 
-    [HttpPost("new")]
+    [HttpPost]
     public async Task<IActionResult> Register([FromBody] RegisterMoneyOperationRequest request)
     {
         await _registerMoneyOperationUsecase.HandleAsync(request);
@@ -40,7 +40,7 @@ public class MoneyOperationsController : ControllerBase
         return Created();
     }
 
-    [HttpPut("edit")]
+    [HttpPut]
     public async Task<IActionResult> Edit([FromBody] EditMoneyOperationRequest request)
     {
         await _editMoneyOperationUsecase.HandleAsync(request);

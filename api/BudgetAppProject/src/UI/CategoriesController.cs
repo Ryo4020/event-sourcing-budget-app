@@ -15,7 +15,7 @@ public class CategoriesController : ControllerBase
     private readonly IDeleteCategoryUsecase _deleteCategoryUsecase;
     private readonly IGetCategoriesUsecase _getCategoriesUsecase;
 
-    public CategoriesController (
+    public CategoriesController(
         IRegisterCategoryUsecase registerCategoryUsecase,
         IRenameCategoryUsecase renameCategoryUsecase,
         IDeleteCategoryUsecase deleteCategoryUsecase,
@@ -53,10 +53,10 @@ public class CategoriesController : ControllerBase
         return NoContent();
     }
 
-    [HttpGet()]
+    [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        var request = new GetCategoriesRequest() {};
+        var request = new GetCategoriesRequest() { };
         var categories = await _getCategoriesUsecase.HandleAsync(request);
 
         return Ok(categories);

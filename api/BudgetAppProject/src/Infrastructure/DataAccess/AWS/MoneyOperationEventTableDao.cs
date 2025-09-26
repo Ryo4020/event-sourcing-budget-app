@@ -209,7 +209,7 @@ public class MoneyOperationEventTableDao
             type: EnumHelper.ParseEnumFromInt<MoneyOperationType>(
                 DynamoDbAttributeHelper.GetRequiredIntAttributeValue(item, "event_target_type")
             ),
-            userId: DynamoDbAttributeHelper.GetRequiredStringAttributeValue(item, "event_target_user_id"),
+            userId: DynamoDbAttributeHelper.GetRequiredStringAttributeValue(item, "user_id"),
             categoryId: DynamoDbAttributeHelper.GetRequiredStringAttributeValue(item, "event_target_category_id")
         );
     }

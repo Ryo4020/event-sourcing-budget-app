@@ -22,6 +22,6 @@ public static class EnvironmentVariablesExtension
         };
     }
 
-    private static string GetServiceResourceName(string name, string stage) => 
+    private static string GetServiceResourceName(string name, string stage) =>
         $"EventSourcingBudgetApp{name}-{stage}";
 }
