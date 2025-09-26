@@ -27,7 +27,6 @@ public class GetMoneyOperationsUsecase : IGetMoneyOperationsUsecase
             Price = m.Price,
             OperationAt = m.OperationAt,
             Type = (uint)m.Type,
-            UserId = m.UserId,
             CategoryId = m.CategoryId
         }).ToList();
 

@@ -27,13 +27,13 @@ public class EditMoneyOperationUsecase : IEditMoneyOperationUsecase
             request.MoneyOperation.Price,
             request.MoneyOperation.OperationAt,
             (MoneyOperationType)request.MoneyOperation.Type,
-            request.MoneyOperation.UserId,
+            userId,
             request.MoneyOperation.CategoryId
         );
 
         var editedEvent = new MoneyOperationEdited(moneyOperation);
         await _eventPublisher.Publish(editedEvent);
 
-        return new EditMoneyOperationResponse {};
+        return new EditMoneyOperationResponse { };
     }
 }
