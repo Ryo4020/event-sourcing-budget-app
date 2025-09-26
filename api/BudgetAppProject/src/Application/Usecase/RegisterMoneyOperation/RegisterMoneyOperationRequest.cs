@@ -18,7 +18,7 @@ public readonly record struct RegisterMoneyOperationRequest
     public required DateTimeOffset OperationAt { get; init; }
 
     [Required(ErrorMessage = "Type is required.")]
-    [AllowedValues(1, 2, ErrorMessage = "Type must be either 1 (Income) or 2 (Expense).")]
+    [Range(1, 2, ErrorMessage = "Type must be either 1 (Income) or 2 (Expense).")]
     public required uint Type { get; init; }
 
     [Required(ErrorMessage = "CategoryId is required.", AllowEmptyStrings = false)]

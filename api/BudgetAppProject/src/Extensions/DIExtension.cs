@@ -3,6 +3,14 @@ namespace BudgetAppProject.Extensions;
 using Amazon.DynamoDBv2;
 using BudgetAppProject.Application.Common;
 using BudgetAppProject.Application.Usecase.RegisterCategory;
+using BudgetAppProject.Application.Usecase.DeleteCategory;
+using BudgetAppProject.Application.Usecase.RenameCategory;
+using BudgetAppProject.Application.Usecase.GetCategories;
+using BudgetAppProject.Application.Usecase.RegisterMoneyOperation;
+using BudgetAppProject.Application.Usecase.EditMoneyOperation;
+using BudgetAppProject.Application.Usecase.DeleteMoneyOperation;
+using BudgetAppProject.Application.Usecase.GetMoneyOperations;
+using BudgetAppProject.Application.Usecase.GetIncomeAndExpenses;
 using BudgetAppProject.DomainModel.Aggregate.Category.Event;
 using BudgetAppProject.DomainModel.Aggregate.MoneyOperation.Event;
 using BudgetAppProject.DomainService;
@@ -18,6 +26,14 @@ public static class DIExtension
     public static IServiceCollection AddUsecases(this IServiceCollection services)
     {
         services.AddScoped<IRegisterCategoryUsecase, RegisterCategoryUsecase>();
+        services.AddScoped<IDeleteCategoryUsecase, DeleteCategoryUsecase>();
+        services.AddScoped<IRenameCategoryUsecase, RenameCategoryUsecase>();
+        services.AddScoped<IGetCategoriesUsecase, GetCategoriesUsecase>();
+        services.AddScoped<IRegisterMoneyOperationUsecase, RegisterMoneyOperationUsecase>();
+        services.AddScoped<IEditMoneyOperationUsecase, EditMoneyOperationUsecase>();
+        services.AddScoped<IDeleteMoneyOperationUsecase, DeleteMoneyOperationUsecase>();
+        services.AddScoped<IGetMoneyOperationsUsecase, GetMoneyOperationsUsecase>();
+        services.AddScoped<IGetIncomeAndExpensesUsecase, GetIncomeAndExpensesUsecase>();
 
         return services;
     }
